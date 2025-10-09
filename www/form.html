@@ -1,37 +1,177 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Заявка в библиотеку</title>
-  <script src="js/script.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказ цветов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #e91e63;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .checkbox-group, .radio-group {
+            margin: 15px 0;
+        }
+        .radio-options {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        button {
+            background-color: #e91e63;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #d81b60;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 5px;
+            border-left: 4px solid #e91e63;
+        }
+    </style>
 </head>
 <body>
-  <h1>Заявка в библиотеку</h1>
+    <div class="form-container">
+        <h1>🌹 Заказ цветов</h1>
+        
+        <form id="flowerOrderForm">
+            <div class="form-group">
+                <label for="name">Ваше имя:</label>
+                <input type="text" id="name" name="name" placeholder="Введите ваше имя" required>
+            </div>
 
-  <form id="libraryForm">
-    <label>Имя:</label><br>
-    <input type="text" name="username" placeholder="Введите имя" required><br><br>
+            <div class="form-group">
+                <label for="quantity">Количество цветов:</label>
+                <input type="number" id="quantity" name="quantity" min="1" max="100" value="1" required>
+            </div>
 
-    <label>Номер билета:</label><br>
-    <input type="number" name="ticket" placeholder="Введите номер билета" required><br><br>
+            <div class="form-group">
+                <label for="bouquetType">Вид букета:</label>
+                <select id="bouquetType" name="bouquetType" required>
+                    <option value="">-- Выберите букет --</option>
+                    <option value="roses">Розы</option>
+                    <option value="tulips">Тюльпаны</option>
+                    <option value="lilies">Лилии</option>
+                    <option value="mixed">Смешанный букет</option>
+                    <option value="orchids">Орхидеи</option>
+                </select>
+            </div>
 
-    <label>Жанр книги:</label><br>
-    <select name="genre">
-      <option value="fantasy">Фэнтези</option>
-      <option value="detective">Детектив</option>
-      <option value="romance">Роман</option>
-      <option value="science">Научная</option>
-    </select><br><br>
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" name="card" value="yes">
+                    Добавить открытку (+50₽)
+                </label>
+            </div>
 
-    <input type="checkbox" name="ebook"> Электронная версия<br><br>
+            <div class="form-group">
+                <label>Способ получения:</label>
+                <div class="radio-options">
+                    <div class="radio-option">
+                        <input type="radio" id="delivery" name="deliveryType" value="delivery" checked>
+                        <label for="delivery">Доставка</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="pickup" name="deliveryType" value="pickup">
+                        <label for="pickup">Самовывоз</label>
+                    </div>
+                </div>
+            </div>
 
-    <label>Срок аренды:</label><br>
-    <input type="radio" name="period" value="1 неделя"> 1 неделя<br>
-    <input type="radio" name="period" value="1 месяц"> 1 месяц<br><br>
+            <button type="submit">Оформить заказ</button>
+        </form>
 
-    <button type="submit">Отправить заявку</button>
-  </form>
+        <div id="result"></div>
+    </div>
 
-  <div id="result"></div>
+    <script>
+        document.getElementById("flowerOrderForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const quantity = formData.get('quantity');
+            const bouquetType = formData.get('bouquetType');
+            const card = formData.get('card') === 'yes' ? 'Да' : 'Нет';
+            const deliveryType = formData.get('deliveryType');
+            
+            // Преобразуем значения в читаемый вид
+            const bouquetTypes = {
+                'roses': 'Розы',
+                'tulips': 'Тюльпаны', 
+                'lilies': 'Лилии',
+                'mixed': 'Смешанный букет',
+                'orchids': 'Орхидеи'
+            };
+            
+            const deliveryTypes = {
+                'delivery': 'Доставка',
+                'pickup': 'Самовывоз'
+            };
+
+            let output = `
+                <h3>✅ Ваш заказ принят!</h3>
+                <p><strong>Имя:</strong> ${name}</p>
+                <p><strong>Количество цветов:</strong> ${quantity}</p>
+                <p><strong>Вид букета:</strong> ${bouquetTypes[bouquetType]}</p>
+                <p><strong>Открытка:</strong> ${card}</p>
+                <p><strong>Способ получения:</strong> ${deliveryTypes[deliveryType]}</p>
+                <hr>
+                <p><em>Спасибо за ваш заказ! Мы свяжемся с вами в ближайшее время.</em></p>
+            `;
+            
+            document.getElementById("result").innerHTML = output;
+            
+            // Дополнительно можно показать alert
+            alert(`Спасибо, ${name}! Ваш заказ ${bouquetTypes[bouquetType]} в количестве ${quantity} шт. оформлен.`);
+        });
+    </script>
 </body>
 </html>
