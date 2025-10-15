@@ -47,6 +47,9 @@ lab3/
 Сохраненные заявки:
 <img width="772" height="287" alt="image" src="https://github.com/user-attachments/assets/280bd441-ef1f-4439-8797-b93d0cc995f8" />
 
+Уведомление об ошибке:
+<img width="447" height="486" alt="image" src="https://github.com/user-attachments/assets/7160f6ee-5c4b-48e6-9a5d-636b3eab9215" />
+
 
 ✅ Результат
 
