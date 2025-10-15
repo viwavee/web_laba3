@@ -9,6 +9,15 @@
 <body>
     <h1>Главная страница библиотеки</h1>
     
+    <?php if(isset($_SESSION['errors'])): ?>
+        <ul style="color: red;">
+            <?php foreach($_SESSION['errors'] as $error): ?>
+                <li><?= htmlspecialchars($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <?php unset($_SESSION['errors']); ?>
+    <?php endif; ?>
+    
     <?php if(isset($_SESSION['username'])): ?>
         <p>Данные из сессии (последняя заявка):</p>
         <ul>
