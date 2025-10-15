@@ -13,6 +13,10 @@ $_SESSION['genre'] = $genre;
 $_SESSION['ebook'] = $ebook;
 $_SESSION['period'] = $period;
 
+$line = $username . ";" . $ticket . ";" . $genre . ";" . $ebook . ";" . $period . "\n";
+file_put_contents("data.txt", $line, FILE_APPEND | LOCK_EX);  
+
+
 header("Location: index.php");
 exit();
 ?>
